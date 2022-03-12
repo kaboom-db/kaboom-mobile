@@ -14,4 +14,3 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Kaboom Mobile"
 include ':app'
-include ':kaboomapi'
