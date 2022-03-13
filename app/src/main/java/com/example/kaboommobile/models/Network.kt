@@ -1,4 +1,4 @@
-package com.example.kaboommobile
+package com.example.kaboommobile.models
 
 data class Network(
     val date_created: String,

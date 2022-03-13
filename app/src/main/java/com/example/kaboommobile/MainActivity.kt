@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import com.example.kaboommobile.api.ApiInterface
+import com.example.kaboommobile.models.CartoonResults
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

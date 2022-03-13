@@ -1,4 +1,4 @@
-package com.example.kaboommobile
+package com.example.kaboommobile.models
 
 data class CartoonResults(
     val count: Int,
