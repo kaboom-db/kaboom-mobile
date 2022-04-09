@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:kaboom_dart/kaboom_dart.dart';
-import 'package:kaboom_mobile/src/business_logic/api.dart';
-import 'package:kaboom_mobile/src/views/ui/auth/signuppage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:kaboom_mobile/src/views/ui/main/homepage.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignupPage extends StatefulWidget {
+  const SignupPage({ Key? key }) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignupPage> createState() => _SignupPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignupPageState extends State<SignupPage> {
   final TextEditingController serverController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -86,14 +81,14 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
 
-    final buttonLogin = Padding(
+    final buttonSignup = Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: ButtonTheme(
           height: 56,
           child: ElevatedButton(
-            child: const Text('Login',
+            child: const Text('Signup',
                 style: TextStyle(color: Colors.white, fontSize: 20)),
-            onPressed: login,
+            onPressed: signup,
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -104,17 +99,10 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ));
 
-    const buttonForgotPassword = TextButton(
-        onPressed: null,
-        child: Text(
-          "Forgot Password",
-          style: TextStyle(color: Colors.grey, fontSize: 16),
-        ));
-
-    final buttonSignup = TextButton(
-        onPressed: signupInstead,
+    final buttonLogin = TextButton(
+        onPressed: loginInstead,
         child: const Text(
-          "Signup Instead",
+          "Login Instead",
           style: TextStyle(color: Colors.grey, fontSize: 16),
         ));
 
@@ -129,16 +117,8 @@ class _LoginPageState extends State<LoginPage> {
               inputServer,
               inputUsername,
               inputPassword,
-              buttonLogin,
-              // Row(
-              //   children: [
-              //     buttonForgotPassword,
-              //     const Text("|"),
-              //     buttonSignup,
-              //   ],
-              // ),
-              buttonForgotPassword,
-              buttonSignup
+              buttonSignup,
+              buttonLogin
             ],
           ),
         ),
@@ -146,47 +126,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Future<dynamic> login() async {
-    // Get the details
-    String? server = serverController.text;
-    String? username = usernameController.text;
-    String? password = passwordController.text;
+  Future<dynamic> signup() async {
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
-
-    if (server.isNotEmpty) {
-      KaboomAPI.client = KaboomClient(url: server);
-      // Set the url
-      pref.setString("kaboomUrl", server);
-    } else {
-      // Try and get a SharedPref for it
-      String? prefServer = pref.getString("kaboomUrl");
-      if (prefServer == null) {
-        KaboomAPI.client = KaboomClient();
-        // If there is no pref for the url, and there is no input, save the staging url
-        String? saveUrl = KaboomAPI.client?.url;
-        pref.setString("kaboomUrl", saveUrl!);
-      } else {
-        KaboomAPI.client = KaboomClient(url: prefServer);
-      }
-    }
-
-    if (username.isNotEmpty && password.isNotEmpty) {
-      // Login to Kaboom
-      var t = await KaboomAPI.client?.login(username, password);
-      // Save the accessToken
-      var accessToken = t?.token;
-      var kaboomUsername = t?.username;
-      // pref.setString("kaboomAccessToken", accessToken!);
-      // pref.setString("kaboomUsername", kaboomUsername!);
-
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomePage()));
-    }
   }
 
-  void signupInstead() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SignupPage()));
+  void loginInstead() {
+    Navigator.pop(context);
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kaboom_mobile/src/views/ui/auth/loginpage.dart';
+import 'package:kaboom_mobile/src/business_logic/api.dart';
+import 'package:kaboom_dart/kaboom_dart.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({ Key? key }) : super(key: key);
@@ -13,7 +15,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   @override
   Widget build(BuildContext context) {
     checkAuth().then(((value) => {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => value))
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => value))
     }));
 
     return Scaffold(
@@ -44,7 +46,16 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // Try and get the access token from SharedPreferences
     SharedPreferences pref = await SharedPreferences.getInstance();
 
+    // For debugging purposes
+    pref.remove("kaboomAccessToken");
+    pref.remove("kaboomUrl");
+
     String? accessToken = pref.getString("kaboomAccessToken");
+    String? url = pref.getString("kaboomUrl");
+
+    if (url != null) {
+      KaboomAPI.client = KaboomClient(url: url);
+    }
 
     if (accessToken == null) {
       // User has not Logged in, return a Login page
