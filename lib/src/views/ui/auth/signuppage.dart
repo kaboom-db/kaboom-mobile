@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({ Key? key }) : super(key: key);
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   State<SignupPage> createState() => _SignupPageState();
@@ -22,14 +22,18 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    final logo = Padding(
-      padding: const EdgeInsets.all(20),
-      child: Hero(
-          tag: 'hero',
-          child: CircleAvatar(
-            radius: 50.0,
-            child: Image.asset('assets/images/logo.png'),
-          )),
+    const header = Padding(
+      padding: EdgeInsets.all(25),
+      child: Center(
+        child: Text(
+          "Looks like you're new here!",
+          style: TextStyle(
+            color: Colors.black87, 
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
 
     final inputServer = Padding(
@@ -54,6 +58,22 @@ class _SignupPageState extends State<SignupPage> {
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
           hintText: 'Username *',
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+        ),
+        controller: usernameController,
+      ),
+    );
+
+    final inputEmail = Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: TextField(
+        keyboardType: TextInputType.text,
+        decoration: InputDecoration(
+          hintText: 'Email *',
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
           border: OutlineInputBorder(
@@ -113,9 +133,10 @@ class _SignupPageState extends State<SignupPage> {
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: <Widget>[
-              logo,
+              header,
               inputServer,
               inputUsername,
+              inputEmail,
               inputPassword,
               buttonSignup,
               buttonLogin
@@ -126,9 +147,7 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Future<dynamic> signup() async {
-
-  }
+  Future<dynamic> signup() async {}
 
   void loginInstead() {
     Navigator.pop(context);

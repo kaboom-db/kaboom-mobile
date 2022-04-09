@@ -37,6 +37,20 @@ class _LoginPageState extends State<LoginPage> {
           )),
     );
 
+    const header = Padding(
+      padding: EdgeInsets.all(25),
+      child: Center(
+        child: Text(
+          "Welcome back!",
+          style: TextStyle(
+            color: Colors.black87, 
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+
     final inputServer = Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextField(
@@ -126,17 +140,11 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             children: <Widget>[
               logo,
+              header,
               inputServer,
               inputUsername,
               inputPassword,
               buttonLogin,
-              // Row(
-              //   children: [
-              //     buttonForgotPassword,
-              //     const Text("|"),
-              //     buttonSignup,
-              //   ],
-              // ),
               buttonForgotPassword,
               buttonSignup
             ],
