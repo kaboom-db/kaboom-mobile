@@ -46,10 +46,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
     // Try and get the access token from SharedPreferences
     SharedPreferences pref = await SharedPreferences.getInstance();
 
-    // For debugging purposes
-    pref.remove("kaboomAccessToken");
-    pref.remove("kaboomUrl");
-
     String? accessToken = pref.getString("kaboomAccessToken");
     String? url = pref.getString("kaboomUrl");
 

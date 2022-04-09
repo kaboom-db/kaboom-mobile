@@ -185,8 +185,8 @@ class _LoginPageState extends State<LoginPage> {
       // Save the accessToken
       var accessToken = t?.token;
       var kaboomUsername = t?.username;
-      // pref.setString("kaboomAccessToken", accessToken!);
-      // pref.setString("kaboomUsername", kaboomUsername!);
+      pref.setString("kaboomAccessToken", accessToken!);
+      pref.setString("kaboomUsername", kaboomUsername!);
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
