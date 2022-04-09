@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:kaboom_dart/kaboom_dart.dart';
+import 'package:kaboom_mobile/src/business_logic/api.dart';
+
+import 'package:kaboom_mobile/src/views/ui/main/homepage.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -10,12 +15,14 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final TextEditingController serverController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   @override
   void dispose() {
     serverController.dispose();
     usernameController.dispose();
+    emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -71,7 +78,7 @@ class _SignupPageState extends State<SignupPage> {
     final inputEmail = Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: TextField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: 'Email *',
           contentPadding:
@@ -80,7 +87,7 @@ class _SignupPageState extends State<SignupPage> {
             borderRadius: BorderRadius.circular(50.0),
           ),
         ),
-        controller: usernameController,
+        controller: emailController,
       ),
     );
 
@@ -147,7 +154,47 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
-  Future<dynamic> signup() async {}
+  Future<dynamic> signup() async {
+    String? server = serverController.text;
+    String? username = usernameController.text;
+    String? email = emailController.text;
+    String? password = passwordController.text;
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    if (server.isNotEmpty) {
+      KaboomAPI.client = KaboomClient(url: server);
+      // Set the url
+      pref.setString("kaboomUrl", server);
+    } else {
+      // Try and get a SharedPref for it
+      String? prefServer = pref.getString("kaboomUrl");
+      if (prefServer == null) {
+        KaboomAPI.client = KaboomClient();
+        // If there is no pref for the url, and there is no input, save the staging url
+        String? saveUrl = KaboomAPI.client?.url;
+        pref.setString("kaboomUrl", saveUrl!);
+      } else {
+        KaboomAPI.client = KaboomClient(url: prefServer);
+      }
+    }
+
+    if (username.isNotEmpty && password.isNotEmpty && email.isNotEmpty) {
+      // Signup to Kaboom
+      var t = await KaboomAPI.client?.signup(username, password, email);
+      // Save the accessToken
+      var accessToken = t?.token;
+      var kaboomUsername = t?.username;
+      // pref.setString("kaboomAccessToken", accessToken!);
+      // pref.setString("kaboomUsername", kaboomUsername!);
+
+      print(accessToken);
+      print(kaboomUsername);
+
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    }
+  }
 
   void loginInstead() {
     Navigator.pop(context);
