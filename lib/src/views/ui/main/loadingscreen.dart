@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kaboom_mobile/src/views/ui/main/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:kaboom_mobile/src/views/ui/auth/loginpage.dart';
 import 'package:kaboom_mobile/src/business_logic/api.dart';
@@ -58,7 +59,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       return const LoginPage();
     } else {
       // User has Logged in, return home page
-      return const Text("Home Page");
+      return const HomePage();
     }
   }
 }
