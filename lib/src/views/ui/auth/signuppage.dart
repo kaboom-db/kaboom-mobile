@@ -187,6 +187,7 @@ class _SignupPageState extends State<SignupPage> {
       var kaboomUsername = t?.username;
       pref.setString("kaboomAccessToken", accessToken!);
       pref.setString("kaboomUsername", kaboomUsername!);
+      KaboomAPI.accessToken = accessToken;
 
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => const HomePage()));

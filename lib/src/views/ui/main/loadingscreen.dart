@@ -59,6 +59,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
       return const LoginPage();
     } else {
       // User has Logged in, return home page
+      KaboomAPI.accessToken = accessToken;
       return const HomePage();
     }
   }
